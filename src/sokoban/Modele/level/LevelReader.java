@@ -84,6 +84,7 @@ public class LevelReader {
 					break;
 				case '.':
 					l.ajouteBut(i, j);
+					l.nbBut++;
 					break;
 				case '$':
 					l.ajouteCaisse(i, j);
@@ -91,6 +92,7 @@ public class LevelReader {
 				case '+':
 					l.ajouteBut(i, j);
 					l.ajoutePousseur(i, j);
+					l.nbBut++;
 					break;
 				case '*':
 					l.ajouteBut(i, j);

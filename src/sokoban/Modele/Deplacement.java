@@ -12,6 +12,24 @@ public class Deplacement {
 	int oriY;
 	Direction d;
 	
+	public Deplacement(int x, int y, Direction d) {
+		oriX = x;
+		oriY = y;
+		this.d = d;
+		
+	}
+	public static Direction dir(int ox, int oy, int ax, int ay) {
+		if(ox>ax)
+			return Direction.GAUCHE;
+		else if(ox<ax)
+			return Direction.DROITE;
+		else if(oy>ay)
+			return Direction.HAUT;
+		else if(oy<ay)
+			return Direction.BAS;
+		return null;
+	}
+	
 	public int xArrive(){
 		switch(d){
 		case HAUT:

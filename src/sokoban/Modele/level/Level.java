@@ -1,5 +1,8 @@
 package sokoban.Modele.level;
 
+
+
+
 enum Case {
 	SOL,
 	CAISSE,
@@ -17,6 +20,21 @@ public class Level {
 	private int nbColonne;
 	private Case terrain[][];
 	
+	int nbBut;
+	private int nbCaissePlace;
+	
+	private int posXDep;
+	private int posYDep;
+	
+	
+	public int getPosXDep() {
+		return posXDep;
+	}
+
+	public int getPosYDep() {
+		return posYDep;
+	}
+
 	public Level(Level l){
 		this.nbColonne = l.nbColonne;
 		this.nbLigne = l.nbLigne;
@@ -24,7 +42,7 @@ public class Level {
 		this.fixeNom(l.nom);
 	}
 
-	Level(String nom, int nbLigne, int nbCol){
+	public Level(String nom, int nbLigne, int nbCol){
 		this.nbColonne = nbCol;
 		this.nbLigne = nbLigne;
 		this.terrain = new Case[nbLigne][nbCol];
@@ -40,7 +58,15 @@ public class Level {
 	}
 
 	public void videCase(int i, int j) {
-		this.terrain[i][j] = Case.SOL;
+		if (aCaisseSurBut(i,j)) {
+			nbCaissePlace--;
+			this.ajouteBut(i, j);
+		}
+		else if(aPousseurSurBut(i, j)) {
+			this.ajouteBut(i, j);
+		}
+		else 
+			this.terrain[i][j] = Case.SOL;
 	}
 
 	public void ajouteMur(int i, int j) {
@@ -53,11 +79,15 @@ public class Level {
 		}
 		else
 			this.terrain[i][j] = Case.POUSSEUR;
+		posXDep = j;
+		posYDep = i;
+
 	}
 
 	public void ajouteCaisse(int i, int j) {
 		if (this.aBut(i,j)) {
 			this.terrain[i][j] = Case.CAISSE_SUR_BUT;
+			nbCaissePlace++;
 		}
 		else
 			this.terrain[i][j] = Case.CAISSE;
@@ -78,6 +108,8 @@ public class Level {
 	public String nom() {
 		return this.nom;
 	}
+	
+	/* Fonctions de test */
 
 	public boolean estVide(int l, int c) {
 		return this.terrain[l][c] == Case.SOL;
@@ -88,15 +120,15 @@ public class Level {
 	}
 
 	public boolean aBut(int l, int c) {
-		return this.terrain[l][c] == Case.BUT;
+		return this.terrain[l][c] == Case.BUT || aPousseurSurBut(l,c) || aCaisseSurBut(l,c);
 	}
 
 	public boolean aPousseur(int l, int c) {
-		return this.terrain[l][c] == Case.POUSSEUR;
+		return this.terrain[l][c] == Case.POUSSEUR || aPousseurSurBut(l,c);
 	}
 
 	public boolean aCaisse(int l, int c) {
-		return this.terrain[l][c] == Case.CAISSE;
+		return this.terrain[l][c] == Case.CAISSE  || aCaisseSurBut(l,c);
 	}
 
 	public boolean aPousseurSurBut(int l, int c) {
@@ -105,6 +137,13 @@ public class Level {
 
 	public boolean aCaisseSurBut(int l, int c) {
 		return this.terrain[l][c] == Case.CAISSE_SUR_BUT;
+	}
+	
+	/* Fonctions de déplacement */
+	
+	
+	public boolean estFini() {
+		return (nbCaissePlace == nbBut);
 	}
 
 }
