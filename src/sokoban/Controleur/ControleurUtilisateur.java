@@ -5,10 +5,9 @@ import sokoban.Modele.Deplacement;
 import sokoban.Modele.Jeu;
 import sokoban.Modele.level.Level;
 import sokoban.Modele.level.LevelReader;
-import sokoban.Patterns.Observateur;
 import sokoban.Vue.graphics.Fenetre;
 
-public class ControleurUtilisateur implements Observateur{
+public class ControleurUtilisateur{
 	Fenetre f;
 	Jeu j;
 	
@@ -28,7 +27,6 @@ public class ControleurUtilisateur implements Observateur{
 							)
 					);
 		}
-		f.traceNiveau(j.getL());
 	}
 	
 	public void touchePressee(KeyCode code) {
@@ -48,11 +46,10 @@ public class ControleurUtilisateur implements Observateur{
 		default:
 			break;
 		}
-		f.traceNiveau(j.getL());
 	}
 	
-	public void redimension(Level l) {
-		f.retraceWindow(l);
+	public void redimension() {
+		f.retraceWindow();
 	}
 	
 	public void finJeu() {
@@ -65,16 +62,9 @@ public class ControleurUtilisateur implements Observateur{
 		Level l = (new LevelReader()).ReadNextLevel(f.getInFile());
 		if (l != null) {
 			j.setL(l);
-			f.traceNiveau(l);
 		}
 		f.getC().logger().info("Niveau courant : " + l.nom());
 
-	}
-
-	@Override
-	public void miseAJour() {
-		f.traceNiveau(j.getL());
-		
 	}
 
 }

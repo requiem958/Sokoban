@@ -1,14 +1,23 @@
 package sokoban.Modele;
 
 import sokoban.Modele.level.Level;
+import sokoban.Patterns.Observable;
 
-public class Jeu {
+public class Jeu extends Observable {
+
+
 	private Level l;
 	public int posX, posY;
+	
+	public Jeu() throws Exception {
+		super();
+	}
 
 	public Level getL() {
 		return l;
 	}
+	
+	
 
 	public void setL(Level l) {
 		this.l = l;

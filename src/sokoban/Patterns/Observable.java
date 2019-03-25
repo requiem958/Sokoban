@@ -26,8 +26,6 @@
  */
 package sokoban.Patterns;
 
-import java.util.NoSuchElementException;
-
 import sokoban.Modele.Global.Configuration;
 import sokoban.Structures.Iterateur;
 import sokoban.Structures.Sequence;
@@ -40,7 +38,7 @@ import sokoban.Structures.Sequence;
 public class Observable {
 	Sequence<Observateur> observateurs;
 
-	public Observable() throws NoSuchElementException, Exception {
+	public Observable() throws Exception {
 		observateurs = Configuration.instance().fabriqueSequence().nouvelle();
 	}
 

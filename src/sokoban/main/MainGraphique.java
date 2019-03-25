@@ -41,9 +41,10 @@ public class MainGraphique extends Application {
 		loadImgs();
 		
 		f.initWindow();
+		f.j = j;
 		
 		c = new ControleurUtilisateur(f,j);
-		f.ajouteObservateur(c);
+		j.ajouteObservateur(f);
 				
 		/*
 		 * On définit l'interaction : - toute interaction est gérée par l'utilisateur
@@ -94,7 +95,7 @@ public class MainGraphique extends Application {
 		ChangeListener<Number> ecouteurRedimensionnement = new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				c.redimension(j.getL());
+				c.redimension();
 			}
 		};
 		f.getCan().widthProperty().addListener(ecouteurRedimensionnement);
@@ -114,9 +115,7 @@ public class MainGraphique extends Application {
 			}
 		});
 
-		f.traceNiveau(j.getL());
 		primaryStage.show();
-		f.getCan().requestFocus();
 
 
 	}

@@ -13,11 +13,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import sokoban.Modele.Jeu;
 import sokoban.Modele.Global.Configuration;
 import sokoban.Modele.level.Level;
-import sokoban.Patterns.Observable;
+import sokoban.Patterns.Observateur;
 
-public class Fenetre extends Observable{
+public class Fenetre implements Observateur{
 
 	private Pane vue;
 	private Canvas can;
@@ -36,8 +37,10 @@ public class Fenetre extends Observable{
 
 	private Configuration c;
 	private InputStream inFile;
+	
+	public Jeu j;
 
-	public Fenetre(Stage s) {
+	public Fenetre(Stage s) throws Exception{
 		this.s =s;
 	}
 
@@ -119,6 +122,7 @@ public class Fenetre extends Observable{
 		can = new Canvas(600, 400);
 
 		vue = new Pane(can);
+		
 		boutons = new VBox();
 
 		nextLevel = new Button();
@@ -128,6 +132,7 @@ public class Fenetre extends Observable{
 		HBox scene = new HBox();
 		scene.getChildren().add(vue);
 		scene.getChildren().add(boutons);
+		
 		HBox.setHgrow(vue, Priority.ALWAYS);
 
 		// Contenu de la fenêtre
@@ -145,8 +150,23 @@ public class Fenetre extends Observable{
 		boutons.setMinWidth(nextLevel.getWidth());
 
 	}
-	public void traceNiveau(Level l) {
 
+	// Efface tout puis trace l'image aux coordonnées enregistrées
+	void trace(Image img, int x, int y) {
+		GraphicsContext gc = can.getGraphicsContext2D();
+		gc.drawImage(img, x, y, imgWidth, imgHeight);
+	}
+
+	public void retraceWindow() {
+		this.getBoutons().setMinWidth(this.getNextLevel().getWidth());
+		this.getCan().getGraphicsContext2D().setFill(Paint.valueOf("WHITE"));
+		this.getCan().getGraphicsContext2D().fillRect(0, 0, this.getCan().getWidth(), this.getCan().getHeight());
+		miseAJour();
+	}
+
+	@Override
+	public void miseAJour() {
+		Level l = j.getL();
 		imgHeight = (int) (can.getHeight() / l.lignes());
 		imgWidth = (int) (can.getWidth() / l.colonnes());
 
@@ -169,18 +189,7 @@ public class Fenetre extends Observable{
 				}
 			}
 		}
-	}
-	// Efface tout puis trace l'image aux coordonnées enregistrées
-	void trace(Image img, int x, int y) {
-		GraphicsContext gc = can.getGraphicsContext2D();
-		gc.drawImage(img, x, y, imgWidth, imgHeight);
-	}
-
-	public void retraceWindow(Level l) {
-		this.getBoutons().setMinWidth(this.getNextLevel().getWidth());
-		this.getCan().getGraphicsContext2D().setFill(Paint.valueOf("WHITE"));
-		this.getCan().getGraphicsContext2D().fillRect(0, 0, this.getCan().getWidth(), this.getCan().getHeight());
-		this.traceNiveau(l);
+		
 	}
 
 
